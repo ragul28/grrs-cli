@@ -11,7 +11,8 @@ fn main() {
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
 
     for line in content.lines() {
-        println!("{}", line);
+        if line.contains(&args.pattern) {
+            println!("{}", line);
+        }
     }
-    // println!("pattern: {:?}, path: {:?}", args.pattern, args.path)
 }
