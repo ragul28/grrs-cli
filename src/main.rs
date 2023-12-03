@@ -11,14 +11,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     let args = Cli::parse();
     let content = std::fs::read_to_string(&args.path).with_context(|| format!("could not read file `{}`", args.path.display()))?;
     
-    find_matches(&content, &args.pattern);
+    find_matches(&content, &args.pattern, &mut std::io::stdout());
+
     Ok(())
 }
 
-fn find_matches(content: &str, pattern: &str) {
+fn find_matches(content: &str, pattern: &str, mut writer: impl std::io::Write) {
     for line in content.lines() {
         if line.contains(pattern) {
-            println!("{}", line);
+            writeln!(writer, "{}", line).expect("Clound't write to stdout");
         }
     }
 }
